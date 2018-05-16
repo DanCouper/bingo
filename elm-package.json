@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
     "summary": "Pragmatic Studio's 'Building Web Apps with Elm' Bingo app",
-    "repository": "https://github.com/DanCouper/bingo",
+    "repository": "https://github.com/DanCouper/bingo.git",
     "license": "BSD3",
     "source-directories": [
         "."
