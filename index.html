@@ -3,7 +3,15 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="style.css">
+    <script src="bingo.js"></script>
   </head>
   <body>
+    <script>
+      // Top-level calls are always namespaced under `Elm`.
+      // And in this case, fullscreen is fine, but the apps
+      // can be rendered into HTML elements (useful for
+      // sprinkling in Elm code).
+      Elm.Bingo.fullscreen();
+    </script>
   </body>
 </html>
