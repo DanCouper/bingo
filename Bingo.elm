@@ -4,12 +4,19 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 
 
-playerInfo : String -> a -> String
+playerInfo : String -> Int -> String
 playerInfo name gameNumber =
     name ++ " - Game #" ++ (toString gameNumber)
 
 
-viewPlayer : String -> a -> Html msg
+
+{-
+   Note that msg is a specific kind of type that the HTML
+   can send in response to events (onClick etc).
+-}
+
+
+viewPlayer : String -> Int -> Html msg
 viewPlayer name gameNumber =
     let
         playerInfoText =
@@ -24,15 +31,6 @@ viewHeader : String -> Html msg
 viewHeader title =
     header []
         [ h1 [] [ text title ] ]
-
-
-
-{-
-   Technically, this and `view` aren't functions, they're
-   definitions, just values. But as values are immutable in
-   Elm, and functions are stateless, the distinction doesn't
-   really matter in practice
--}
 
 
 viewFooter : Html msg
