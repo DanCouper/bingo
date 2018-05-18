@@ -1,19 +1,7 @@
 module Bingo exposing (..)
 
-import Html
-
-
-{-
-   Note the toString. The type inference will detect
-   that the two args must be strings, and without toString,
-   if a number is passed, the function will fail to type check.
-
-
-   Note as well that named functions are just sugar for
-   named anonymous functions. So the following is identical to:
-
-       playerInfo = \name gameNumber -> name ++ " - Game #" ++ (toString gameNumber)
--}
+import Html exposing (..)
+import Html.Attributes exposing (..)
 
 
 playerInfo : String -> a -> String
@@ -21,13 +9,47 @@ playerInfo name gameNumber =
     name ++ " - Game #" ++ (toString gameNumber)
 
 
-playerInfoText : String -> a -> Html.Html msg
-playerInfoText name gameNumber =
-    playerInfo name gameNumber
-        |> String.toUpper
-        |> Html.text
+viewPlayer : String -> a -> Html msg
+viewPlayer name gameNumber =
+    let
+        playerInfoText =
+            playerInfo name gameNumber
+                |> String.toUpper
+                |> text
+    in
+        h2 [ id "info", class "classy" ] [ playerInfoText ]
 
 
-main : Html.Html msg
+viewHeader : String -> Html msg
+viewHeader title =
+    header []
+        [ h1 [] [ text title ] ]
+
+
+
+{-
+   Technically, this and `view` aren't functions, they're
+   definitions, just values. But as values are immutable in
+   Elm, and functions are stateless, the distinction doesn't
+   really matter in practice
+-}
+
+
+viewFooter : Html msg
+viewFooter =
+    footer []
+        [ a [ href "https://elm-lang.org" ] [ text "Powered by Elm" ] ]
+
+
+view : Html msg
+view =
+    main_ [ class "content" ]
+        [ viewHeader "Buzzword Bingo"
+        , viewPlayer "Dan" 1
+        , viewFooter
+        ]
+
+
+main : Html msg
 main =
-    playerInfoText "Dan" 1
+    view
