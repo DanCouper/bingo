@@ -3,20 +3,31 @@ module Bingo exposing (..)
 import Html
 
 
-{- All Elm apps must have a `main` function - this is
-   the entry point to the application.
+{-
+   Note the toString. The type inference will detect
+   that the two args must be strings, and without toString,
+   if a number is passed, the function will fail to type check.
+
+
+   Note as well that named functions are just sugar for
+   named anonymous functions. So the following is identical to:
+
+       playerInfo = \name gameNumber -> name ++ " - Game #" ++ (toString gameNumber)
 -}
--- main =
---     Html.text (String.repeat 3 (String.toUpper "Bingo!"))
--- Instead of the above, can use pipe operator as expected:
--- main =
---     "Bingo!"
---         |> String.toUpper
---         |> String.repeat 3
---         |> Html.text
 
 
-main =
-    "Bingo"
+playerInfo : String -> a -> String
+playerInfo name gameNumber =
+    name ++ " - Game #" ++ (toString gameNumber)
+
+
+playerInfoText : String -> a -> Html.Html msg
+playerInfoText name gameNumber =
+    playerInfo name gameNumber
         |> String.toUpper
         |> Html.text
+
+
+main : Html.Html msg
+main =
+    playerInfoText "Dan" 1
