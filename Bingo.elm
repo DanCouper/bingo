@@ -6,13 +6,29 @@ import Html.Attributes exposing (..)
 
 -- MODEL
 {-
-   NOTE the records can be accesed as expected using dot notation - `initialModel.name`.
-   BUT they can also be accessed like `.name initialModel`. This latter way creates an
-   anonymous function from the field key that accepts the record. This comes in useful
-   later on.
+   Type aliases also act as record constructors: for example, the signature of
+   Model is going to be `<function> : String -> Int -> List Entry -> Model`,
+   Entry is going to be `<function> : Int -> String -> Int -> Bool -> Entry`,
+   so can be called like `Entry 1 "Hello, World!" 500, False`.
 -}
 
 
+type alias Model =
+    { name : String
+    , gameNumber : Int
+    , entries : List Entry
+    }
+
+
+type alias Entry =
+    { id : Int
+    , phrase : String
+    , points : Int
+    , marked : Bool
+    }
+
+
+intialModel : Model
 intialModel =
     { name = "Dan"
     , gameNumber = 1
@@ -20,9 +36,10 @@ intialModel =
     }
 
 
+intialEntries : List Entry
 intialEntries =
-    [ { id = 1, phrase = "Future-Proof", points = 100, marked = False }
-    , { id = 2, phrase = "Doing Agile", points = 200, marked = False }
+    [ Entry 1 "Future-Proof" 100 False
+    , Entry 2 "Doing Agile" 200 False
     ]
 
 
@@ -58,10 +75,7 @@ viewFooter =
         [ a [ href "https://elm-lang.org" ] [ text "Powered by Elm" ] ]
 
 
-
--- view : Html msg
-
-
+view : Model -> Html msg
 view model =
     main_ [ class "content" ]
         [ viewHeader "Buzzword Bingo"
