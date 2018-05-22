@@ -5,12 +5,6 @@ import Html.Attributes exposing (..)
 
 
 -- MODEL
-{-
-   Type aliases also act as record constructors: for example, the signature of
-   Model is going to be `<function> : String -> Int -> List Entry -> Model`,
-   Entry is going to be `<function> : Int -> String -> Int -> Bool -> Entry`,
-   so can be called like `Entry 1 "Hello, World!" 500, False`.
--}
 
 
 type alias Model =
@@ -40,6 +34,8 @@ intialEntries : List Entry
 intialEntries =
     [ Entry 1 "Future-Proof" 100 False
     , Entry 2 "Doing Agile" 200 False
+    , Entry 3 "In The Cloud" 300 False
+    , Entry 4 "Rockstar Ninja" 400 False
     ]
 
 
@@ -69,6 +65,23 @@ viewHeader title =
         [ h1 [] [ text title ] ]
 
 
+viewEntryItem : Entry -> Html msg
+viewEntryItem entry =
+    li []
+        [ span [ class "phrase" ] [ text entry.phrase ]
+        , span [ class "points" ] [ text (toString entry.points) ]
+        ]
+
+
+viewEntryList : List Entry -> Html msg
+viewEntryList entries =
+    let
+        listEntries =
+            List.map viewEntryItem entries
+    in
+        ul [] listEntries
+
+
 viewFooter : Html msg
 viewFooter =
     footer []
@@ -80,7 +93,7 @@ view model =
     main_ [ class "content" ]
         [ viewHeader "Buzzword Bingo"
         , viewPlayer model.name model.gameNumber
-        , section [ class "debug" ] [ text (toString model) ]
+        , viewEntryList model.entries
         , viewFooter
         ]
 
