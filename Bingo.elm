@@ -2,6 +2,7 @@ module Bingo exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (onClick)
 
 
 -- MODEL
@@ -40,6 +41,21 @@ intialEntries =
 
 
 
+-- UPDATE
+
+
+type Msg
+    = NewGame
+
+
+update : Msg -> Model -> Model
+update msg model =
+    case msg of
+        NewGame ->
+            { model | gameNumber = model.gameNumber + 1 }
+
+
+
 -- VIEW
 
 
@@ -48,7 +64,7 @@ playerInfo name gameNumber =
     name ++ " - Game #" ++ (toString gameNumber)
 
 
-viewPlayer : String -> Int -> Html msg
+viewPlayer : String -> Int -> Html Msg
 viewPlayer name gameNumber =
     let
         playerInfoText =
@@ -59,13 +75,13 @@ viewPlayer name gameNumber =
         h2 [ id "info", class "classy" ] [ playerInfoText ]
 
 
-viewHeader : String -> Html msg
+viewHeader : String -> Html Msg
 viewHeader title =
     header []
         [ h1 [] [ text title ] ]
 
 
-viewEntryItem : Entry -> Html msg
+viewEntryItem : Entry -> Html Msg
 viewEntryItem entry =
     li []
         [ span [ class "phrase" ] [ text entry.phrase ]
@@ -73,7 +89,7 @@ viewEntryItem entry =
         ]
 
 
-viewEntryList : List Entry -> Html msg
+viewEntryList : List Entry -> Html Msg
 viewEntryList entries =
     let
         listEntries =
@@ -82,22 +98,37 @@ viewEntryList entries =
         ul [] listEntries
 
 
-viewFooter : Html msg
+viewFooter : Html Msg
 viewFooter =
     footer []
         [ a [ href "https://elm-lang.org" ] [ text "Powered by Elm" ] ]
 
 
-view : Model -> Html msg
+view : Model -> Html Msg
 view model =
     main_ [ class "content" ]
         [ viewHeader "Buzzword Bingo"
         , viewPlayer model.name model.gameNumber
         , viewEntryList model.entries
+        , div [ class "button-group" ]
+            [ button [ onClick NewGame ] [ text "New Game" ] ]
+        , section [ class "debug" ] [ text (toString model) ]
         , viewFooter
         ]
 
 
-main : Html msg
+
+-- This won't work, it's static. It needs to be wired up...
+-- main : Html Msg
+-- main =
+--     view intialModel
+-- ...SO:
+
+
+main : Program Never Model Msg
 main =
-    view intialModel
+    Html.beginnerProgram
+        { model = intialModel
+        , view = view
+        , update = update
+        }
